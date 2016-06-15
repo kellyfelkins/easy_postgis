@@ -3,6 +3,8 @@
 EasyPostgis is a gemification of the code described in Nick Gauthier's 2013 blog post 
 ['PostGIS and Rails: A Simple Approach'][1]. 
 
+[1]: http://ngauthier.com/2013/08/postgis-and-rails-a-simple-approach.html
+
 It adds 2 scopes to your model: 
 
 * near(point, distance_in_meters)
@@ -52,8 +54,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/easy_postgis. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
-
+Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/easy_postgis. 
 
 ## License
 
