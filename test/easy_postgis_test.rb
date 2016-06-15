@@ -28,13 +28,13 @@ TEXT
       begin
         Address.connection.create_table(:addresses) do |t|
           t.column :lat, :decimal, :precision => 15, :scale => 10
-          t.column :lon, :decimal, :precision => 15, :scale => 10
+          t.column :lng, :decimal, :precision => 15, :scale => 10
           t.column :address, :string
         end
         Address.connection.execute <<SQL
 create index point_index ON addresses using gist (
   ST_GeographyFromText(
-    'SRID=4326;POINT(' || addresses.lon || ' ' || addresses.lat || ')'
+    'SRID=4326;POINT(' || addresses.lng || ' ' || addresses.lat || ')'
   )
 )
 SQL
@@ -45,13 +45,13 @@ SQL
       atv.each do |row|
         Address.create!(
           :lat => row['latitude'],
-          :lon => row['longitude'],
+          :lng => row['longitude'],
           :address => row['address']
         )
       end
 
       primary_address = Address.where(:address => '2234 Noriega St, San Francisco CA').take!
-      distance_relation = Address.w_distance(primary_address).near(primary_address, 304.8)
+      distance_relation = Address.near(primary_address, 304.8)
       near_addresses = distance_relation.all
 
       near_addresses.map(&:address).must_equal([
