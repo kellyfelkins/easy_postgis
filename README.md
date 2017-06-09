@@ -5,13 +5,23 @@ EasyPostgis is a gemification of the code described in Nick Gauthier's 2013 blog
 
 [1]: http://ngauthier.com/2013/08/postgis-and-rails-a-simple-approach.html
 
-It adds 2 scopes to your model: 
+It creates 2 scopes for use by your model: 
 
 * near(point, distance_in_meters)
 * with_distance(point)
 
 *near* filters the rows based on distance from the point.
 *with_distance* adds a distance column to the result.
+
+```ruby
+# find the node closest to a lat lon
+def self.nearest_node(lat, lng)
+  point = OpenStruct.new(:lat => lat, :lng => lng)
+  Node.with_distance(point).order("distance").first # use quoted string rather than symbol for 
+                                                    # distance so that rails does not append 
+                                                    # a table name
+end
+```
 
 ## Installation
 
@@ -31,6 +41,29 @@ Or install it yourself as:
 
 ## Usage
 
+Add the postgis extension and create the index for your table in a migration:
+
+```ruby
+class AddPostgis < ActiveRecord::Migration
+  def up
+    execute 'create extension postgis'
+    execute %{
+      create index index_on_node_location on nodes using gist (
+        ST_GeographyFromText(
+          'SRID=4326;POINT(' || nodes.lng || ' ' || nodes.lat || ')'
+        )
+      )
+    }
+  end
+
+  def down
+    execute %{drop index index_on_node_location}
+  end
+end
+```
+
+Include EasyPostgis in your model:
+
 ```ruby
   class Address
     # has lat and lng attributes 
@@ -45,8 +78,10 @@ Or install it yourself as:
 
 TODO:
   
-  * you must create the test database: psql> create database easy_postgis_test;
+  * you must create the test database to run the tests: psql> create database easy_postgis_test;
   * you must add gis: psql> create extension postgis;
+  * we should allow for customization of the lat/lng column names
+  * we should provide a generator to create a migration that adds the index
   
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
