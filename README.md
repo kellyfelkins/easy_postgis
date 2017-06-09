@@ -65,13 +65,13 @@ end
 Include EasyPostgis in your model:
 
 ```ruby
-  class Address
-    # has lat and lng attributes 
-    include EasyPostgis
-  end
-  
-  some_address = Address.first
-  near_by_addresses = Address.near(some_address, 500) # Addresses within 500 meters
+class Address
+# has lat and lng attributes 
+include EasyPostgis
+end
+
+some_address = Address.first
+near_by_addresses = Address.near(some_address, 500) # Addresses within 500 meters
 ```
 
 ## Development
@@ -83,13 +83,13 @@ TODO:
   * we should allow for customization of the lat/lng column names
   * we should provide a generator to create a migration that adds the index
   
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. 
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+To install this gem onto your local machine, run `bundle exec rake install`.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/easy_postgis. 
+Bug reports and pull requests are welcome on GitHub at https://github.com/kellyfelkins/easy_postgis. 
 
 ## License
 
